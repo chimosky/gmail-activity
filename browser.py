@@ -31,8 +31,8 @@ from gi.repository import GObject
 class Browser(Gtk.ScrolledWindow):
 
     __gsignals__ = {
-        "load-finished": (
-            GObject.SIGNAL_RUN_LAST, None, (GObject.TYPE_STRING,)
+        "load-changed": (
+            GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, [GObject.TYPE_STRING])
         ),
     }
 
@@ -40,7 +40,7 @@ class Browser(Gtk.ScrolledWindow):
         Gtk.ScrolledWindow.__init__(self)
 
         self.browser = WebKit.WebView()
-        self.browser.connect("load_changed", self.__load_finished)
+        self.browser.connect("load-changed", self.__load_finished)
         self.add(self.browser)
 
         self.show_all()
@@ -49,7 +49,7 @@ class Browser(Gtk.ScrolledWindow):
         source = frame.get_data_source()
         data = source.get_data()
         if data is not None:
-            self.emit("load_changed", data.str)
+            self.emit("load-changed", data.str)
 
     def open(self, url):
-        GLib.idle_add(self.browser.load_uri, url)
+        GLib.idle_add(self.browser.open, url)
