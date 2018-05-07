@@ -42,7 +42,7 @@ class LoginScreen(Gtk.VBox):
         Gtk.VBox.__init__(self)
 
         self.browser = Browser()
-        self.browser.connect("load-finished", self._load_finished_cb)
+        self.browser.connect("load-changed", self._load_finished_cb)
         self.pack_start(self.browser, True, True, 10)
 
     def _load_finished_cb(self, browser, html):

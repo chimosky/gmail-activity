@@ -20,11 +20,11 @@
 
 import gi
 gi.require_version("Gtk", "3.0")
-gi.require_version("WebKit", "3.0")
+gi.require_version("WebKit2", "4.0")
 
 from gi.repository import Gtk
 from gi.repository import GLib
-from gi.repository import WebKit
+from gi.repository import WebKit2 as WebKit
 from gi.repository import GObject
 
 
@@ -33,7 +33,6 @@ class Browser(Gtk.ScrolledWindow):
     __gsignals__ = {
         "load-changed": (
             GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, [GObject.TYPE_STRING])
-        ),
     }
 
     def __init__(self):
@@ -52,4 +51,4 @@ class Browser(Gtk.ScrolledWindow):
             self.emit("load-changed", data.str)
 
     def open(self, url):
-        GLib.idle_add(self.browser.open, url)
+        GLib.idle_add(self.browser.load_uri, url)
